@@ -6,33 +6,30 @@
 
 	class rectGrid {
 
-		var $supply_grid = array();
-		var $temp_shapes = array();
-		var $final_grid  = array();
-		var $g_width     = 0;
-		var $g_height    = 0;
+		public $supply_grid = array();
+		public $temp_shapes = array();
+		public $final_grid  = array();
+		public $g_width     = 0;
+		public $g_height    = 0;
+		public $target      = 6;
+		private static $target_area = 0;
 
-		function __construct($g_width=6,$g_height=6) {
+		function __construct($g_width=6,$g_height=6,$target=6) {
 			
 			$this->g_width  = $g_width;
 			$this->g_height = $g_height;
+			$this->target   = $target;
+
+			self::$target_area = $this->g_width * $this->g_height / $this->target;
 
 			$this->fillGrid();
-
-			// unset($this->supply_grid["1.1"]);
-			// unset($this->supply_grid["2.1"]);
-			// unset($this->supply_grid["2.2"]);
-			// unset($this->supply_grid["5.5"]);
-			// unset($this->supply_grid["4.5"]);
 
 			while (count($this->supply_grid)>0) {
 				
 				$this->chooseShape();
-				echo $this->checkGrid(30);
+				echo $this->checkGrid(40,30);
 
 			}
-			
-
 
 		}
 
@@ -47,29 +44,32 @@
 
 		}
 
-		public function testShape($shape,$scale = 20,$color="red") {
+		public function testShape($shape,$scale_x = 20,$scale_y = 20,$color="red") {
+
+
+			$background = "rgb(".mt_rand(0,255).",".mt_rand(0,255).",".mt_rand(0,255).")";
 
 
 			list($x,$y,$w,$h) = explode(".", $shape);
 
-			$tmpl = "<div style='border:1px solid ".$color.";position:absolute;width:%dpx;height:%dpx;top:%dpx;left:%dpx;'></div>";
+			$tmpl = "<div style='background:".$background.";position:absolute;width:%dpx;height:%dpx;top:%dpx;left:%dpx;'></div>";
 
-			return sprintf($tmpl,$w*$scale,$h*$scale,$y*$scale,$x*$scale);
+			return sprintf($tmpl,$w*$scale_x,$h*$scale_y,$y*$scale_y,$x*$scale_x);
 
 		}
 
-		function checkGrid($scale = 20) {
+		function checkGrid($scale_x = 20,$scale_y = 20) {
 
 			$supplyHTML = "";
 
 			foreach ($this->supply_grid as $coor => $data) {
 				
-				$x = $data[0]*$scale;
-				$y = $data[1]*$scale;
-				$w = $scale;
-				$h = $scale;
+				$x = $data[0]*$scale_x;
+				$y = $data[1]*$scale_y;
+				$w = $scale_x;
+				$h = $scale_y;
 
-				$tmpl = "<div style='border:1px solid yellow;position:absolute;width:%dpx;height:%dpx;top:%dpx;left:%dpx;'></div>";
+				$tmpl = "<div style='float:left;border:1px solid gainsboro;position:absolute;width:%dpx;height:%dpx;top:%dpx;left:%dpx;'></div>";
 
 				$supplyHTML .= sprintf($tmpl,$w,$h,$y,$x);
 
@@ -79,29 +79,29 @@
 
 			foreach ($this->final_grid as $shape) {
 				
-				$usedHTML .= $this->testShape($shape,$scale,"blue");
+				$usedHTML .= $this->testShape($shape,$scale_x,$scale_y,"blue");
 
 			}
 
-			$gridTmpl = "<div class='grid' style='border:1px solid green;margin:10px;float:left;position:relative;width:%dpx;height:%dpx;'>%s</div>";
+			$gridTmpl = "<div class='grid' style='float:left;border:2px solid green;margin:10px;position:relative;width:%dpx;height:%dpx;'>%s</div>";
 
-			return sprintf($gridTmpl,$scale*$this->g_width,$scale*$this->g_height,$supplyHTML.$usedHTML);
+			return sprintf($gridTmpl,$scale_x*$this->g_width,$scale_y*$this->g_height,$supplyHTML.$usedHTML);
 
 		}
 
-		function checkChoices($scale = 20) {
+		function checkChoices($scale_x = 20,$scale_y=20) {
 
 			$choiceHTML = "";
 
 			foreach ($this->temp_shapes as $shape) {
 				
-				$choiceHTML .= $this->testShape($shape,$scale,"salmon");
+				$choiceHTML .= $this->testShape($shape,$scale_x,$scale_y,"salmon");
 
 			}
 
-			$gridTmpl = "<div class='grid' style='border:1px solid green;margin:10px;float:left;position:relative;width:%dpx;height:%dpx;'>%s</div>";
+			$gridTmpl = "<div class='grid' style='margin:10px;position:relative;width:%dpx;height:%dpx;'>%s</div>";
 
-			return sprintf($gridTmpl,$scale*$this->g_width,$scale*$this->g_height,$choiceHTML);
+			return sprintf($gridTmpl,$scale_x*$this->g_width,$scale_y*$this->g_height,$choiceHTML);
 
 		}
 
@@ -175,12 +175,29 @@
 
 		}
 
+		private static function sort_shapes($a,$b){
+
+			$target_area = self::$target_area;
+
+			list($xa,$ya,$wa,$ha) = explode(".", $a);
+			list($xb,$yb,$wb,$hb) = explode(".", $b);
+
+			return ( abs($target_area - $wb*$hb) < abs($target_area - $wa*$ha) ) ? +1 : -1;
+
+		}
+
 		public function chooseShape(){
 
 			
 			$this->findAll();
-			// sort by area ? maybe..... modify temp_shapes
-			$k = array_rand($this->temp_shapes);
+
+			// initial idea for specifying how 
+			// large i want the chunks to be based on "target"
+			shuffle($this->temp_shapes);
+			usort($this->temp_shapes, array('rectGrid','sort_shapes'));
+			// $k = mt_rand(0,floor( pow(count($this->temp_shapes),.3) ));
+			$k = 0;
+
 			$shape = $this->temp_shapes[$k];
 			$this->subtract_shape($shape);
 			$this->final_grid[] = $shape;			
