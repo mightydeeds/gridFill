@@ -1,11 +1,11 @@
 <?php 
 	
-	require_once('php/grid-fill.php');
+	require_once('php/grid1.php');
 
 ?>
 
-
 <!DOCTYPE html>
+
 <html>
 <head>
 	<title>Grid Test</title>
