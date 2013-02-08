@@ -11,23 +11,25 @@
 		public $final_grid  = array();
 		public $g_width     = 0;
 		public $g_height    = 0;
-		public $target      = 6;
+		public $target      = false;
 		private static $target_area = 0;
 
-		function __construct($g_width=6,$g_height=6,$target=6) {
+		function __construct($g_width=6,$g_height=6,$target=false) {
 			
 			$this->g_width  = $g_width;
 			$this->g_height = $g_height;
 			$this->target   = $target;
 
-			self::$target_area = $this->g_width * $this->g_height / $this->target;
+			if($this->target){
+				self::$target_area = $this->g_width * $this->g_height / $this->target;
+			}
 
 			$this->fillGrid();
 
 			while (count($this->supply_grid)>0) {
 				
 				$this->chooseShape();
-				echo $this->checkGrid(40,30);
+				echo $this->checkGrid(20,15);
 
 			}
 
@@ -194,11 +196,14 @@
 			// initial idea for specifying how 
 			// large i want the chunks to be based on "target"
 			shuffle($this->temp_shapes);
-			usort($this->temp_shapes, array('rectGrid','sort_shapes'));
-			// $k = mt_rand(0,floor( pow(count($this->temp_shapes),.3) ));
+
+			if($this->target){
+				usort($this->temp_shapes, array('rectGrid','sort_shapes'));
+			}
+			
 			$k = 0;
 
-			$shape = $this->temp_shapes[$k];
+			$shape = $this->temp_shapes[0];
 			$this->subtract_shape($shape);
 			$this->final_grid[] = $shape;			
 

@@ -16,9 +16,9 @@
 
 	<?php
 
-		$h = 10;
-		$w = 6;
-		$target = 3;
+		$h = 20;
+		$w = 16;
+		$target = 5;
 
 		$grid = new rectGrid($w,$h,$target);
 
