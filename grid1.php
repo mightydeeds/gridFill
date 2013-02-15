@@ -29,9 +29,11 @@
 			while (count($this->supply_grid)>0) {
 				
 				$this->chooseShape();
-				echo $this->checkGrid(20,15);
+				
 
 			}
+
+			echo $this->checkGrid(40,30);
 
 		}
 

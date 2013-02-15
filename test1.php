@@ -16,14 +16,15 @@
 
 	<?php
 
-		$h = 20;
-		$w = 16;
-		$target = 5;
+		$h = 10;
+		$w = 9;
+		$target = 4;
+		$grid1 = new rectGrid($w,$h,$target);
 
-		$grid = new rectGrid($w,$h,$target);
+		$grid2 = new rectGrid(10,15,30);
 
-		// echo "<hr/>Predicted size <br/>";
-		// echo $grid->testSize($w,$h);
+		$grid3 = new rectGrid(6,3,3);
+
 
 	?>
 
