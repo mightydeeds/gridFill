@@ -34,13 +34,13 @@
 			// }
 
 			// echo $this->checkGrid(40,30);
+			$w = 20;
+			$h = 20;
+			$shapes = $this->findAll($w,$h);
 
-			$shape1 = $this->buildShape(0,0,2,2);
-			// print_r($shape1);
-			$shape2 = $this->buildShape(1,1,3,3);
-			// print_r($shape2);
 
-			print_r (array_intersect($shape1, $shape2));
+			echo "expected: ".$this->testSize($w,$h)."\n";
+			echo "result: ".count($shapes);
 
 		}
 
@@ -69,7 +69,7 @@
 
 		}
 
-		function checkGrid($scale_x = 20,$scale_y = 20) {
+		public function checkGrid($scale_x = 20,$scale_y = 20) {
 
 			$supplyHTML = "";
 
@@ -130,42 +130,37 @@
 
 			}
 
-			return($shape);
+			return $shape;
 
 		}
 
-		public function findAll() {
+		public function findAll($w,$h) {
 
-			$possible_shapes = array();
+			$shapes = array();
 
-			foreach ($this->supply_grid as $coor => $data) {
+			for($yi=0; $yi < $h; $yi++){
 
-				$current_x = $data[0];
-				$current_y = $data[1];
-				$y_max     = $this->g_height;
+				for($xi=0; $xi < $w; $xi++) {
+					
+					// for every starting point
 
-				$x_available = true;
-				
-				while (array_key_exists($current_x.".".$current_y, $this->supply_grid)) {
+					for($xf=$xi; $xf < $w; $xf++) {
+						
+						for( $yf=$yi; $yf < $h; $yf++) {
 
-					while (array_key_exists($current_x.".".$current_y, $this->supply_grid) && $current_y < $y_max) {
+							$shapes[] = $xi.".".$yi.".".$xf.".".$yf;
+							// $shapes[] = array($xi,$yi,$xf,$yf);
+							// $shapes[] = $this->buildShape($xi,$yi,$xf,$yf);
 
-						// shapes are in the format x.y.w.h
-						$shape = array($data[0],$data[1],$current_x-$data[0]+1,$current_y-$data[1]+1);
-						$possible_shapes[] = implode(".", $shape);
-						$current_y ++;
+						}
 
 					}
-
-					$y_max = $current_y;
-					$current_y = $data[1];
-					$current_x ++;
 
 				}
 
 			}
 
-			$this->temp_shapes = $possible_shapes;
+			return $shapes;
 
 		}
 
