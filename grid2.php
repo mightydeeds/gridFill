@@ -158,6 +158,9 @@
 				foreach (array($s1[0],$s1[3]) as $y) {
 					
 					// are they inside s2?
+					s2[1] <= $<= $
+
+					($min <= s2[1]) || ($value <= s2[1]) ? true : false;
 
 				}
 			}
