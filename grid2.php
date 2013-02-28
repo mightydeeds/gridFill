@@ -120,9 +120,9 @@
 
 			$shape = array();
 
-			foreach(range($x1,$x2) as $xc){
+			foreach(range($y1,$y2) as $yc){
 
-				foreach (range($y1,$y2) as $yc) {
+				foreach (range($x1,$x2) as $xc) {
 					
 					$shape[] = $xc.".".$yc;
 
