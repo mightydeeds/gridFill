@@ -100,22 +100,6 @@
 
 		}
 
-		public function fillGrid() {
-
-			$grid = array();
-			
-			foreach (range(0, $this->g_height-1) as $y) {
-
-				foreach (range(0, $this->g_width-1) as $x) {
-
-					$this->supply_grid[$x.".".$y] = array($x,$y);
-
-				}
-
-			}	
-
-		}
-
 		public function buildShape($x1,$y1,$x2,$y2){
 
 			$shape = array();
@@ -164,24 +148,24 @@
 
 		}
 
-		public function subtract_shape($shape){
+		public function doesIntersect($shape1,$shape2) {
 
-			list($xi,$yi,$w,$h) = explode(".", $shape);
+			$s1 = explode(".", $shape1);
+			$s2 = explode(".", $shape2);
 
-			for ($y=$yi; $y < $yi+$h; $y++) { 
-
-				for ($x=$xi; $x < $xi+$w; $x++) { 
+			// loop through the corners of s1
+			foreach(array($s1[0],$s1[2]) as $x){
+				foreach (array($s1[0],$s1[3]) as $y) {
 					
-					// echo "remove ".$x.".".$y."<br/>";
-
-					unset($this->supply_grid[$x.".".$y]);
+					// are they inside s2?
 
 				}
-
 			}
 
+			
 
 		}
+
 
 		private static function sort_shapes($a,$b){
 
