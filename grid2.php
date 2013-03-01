@@ -174,7 +174,7 @@
 		// $test1 = new rectGrid(10,10,3);
 		// $test2 = new rectGrid(10,10,5);
 		// $test3 = new rectGrid(10,10,10);
-		$test4 = new rectGrid(15,15,15);
+		$test4 = new rectGrid(5,5,15);
 		// $test5 = new rectGrid(10,10,50);
 	$stop = microtime(true);
 	printf("\nall grids: %.5f seconds\n", $stop-$start);
