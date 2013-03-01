@@ -16,14 +16,18 @@
 
 	<?php
 
-		$h = 10;
-		$w = 9;
-		$target = 4;
+		$h = 15;
+		$w = 15;
+		$target = 15;
+
+		$start = microtime(true);
 		$grid1 = new rectGrid($w,$h,$target);
+		$stop = microtime(true);
+		printf("\nall grids: %.5f seconds\n", $stop-$start);
 
-		$grid2 = new rectGrid(10,15,30);
+		// $grid2 = new rectGrid(10,15,30);
 
-		$grid3 = new rectGrid(6,3,3);
+		// $grid3 = new rectGrid(6,3,3);
 
 
 	?>

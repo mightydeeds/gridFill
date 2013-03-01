@@ -24,16 +24,26 @@
 				self::$target_area = $this->g_width * $this->g_height / $this->target;
 			}
 
+			
 			$this->fillGrid();
+			
+
+			$total_choosing = 0;
 
 			while (count($this->supply_grid)>0) {
 				
+				$start = microtime(true); // **********************************
 				$this->chooseShape();
+				$stop = microtime(true); // **********************************
+				$total_choosing += $stop-$start;
+				printf("shape:\t%.5f \n", $stop - $start); // ******
 				
 
 			}
 
-			echo $this->checkGrid(40,30);
+			printf("shapes:\t%.5f \n", $total_choosing); // ******
+
+			// echo $this->checkGrid(40,30);
 
 		}
 
@@ -191,8 +201,6 @@
 		}
 
 		public function chooseShape(){
-
-			
 			$this->findAll();
 
 			// initial idea for specifying how 
