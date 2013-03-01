@@ -55,7 +55,7 @@
 
 			printf("shapes:\t%.5f \n", $total_choosing); // ******
 
-			// echo $this->checkGrid($this->final_grid,40,30);
+			echo $this->checkGrid($this->final_grid,40,30);
 
 		}
 
